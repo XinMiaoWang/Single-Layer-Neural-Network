@@ -31,11 +31,7 @@ def preprocess(data):
     data, noiseData = romoveNoise(np.array(data)) # 移除雜點
     data = changeLabel(np.array(data)) # 統一label
     np.random.shuffle(data) # 打亂data
-    # print('Random: ',data)
     train, test = data[:int(len(data)*2/3)], data[int(len(data)*2/3):] # 分2/3 teaing data，1/3 testing data
-    # train, test = np.array(data[:]), []
-    # print('Train: ',train)
-    # print('Test: ',test)
 
     if len(noiseData) == 0:
         return train, test, []
@@ -46,8 +42,6 @@ def preprocess(data):
 def romoveNoise(data):
     originalData = copy.copy(data)
     countLabel = Counter(data[:, -1]) # 計算label種類
-    # print('QQQQQQ', countLabel)
-    # print('Len: ',len(countLabel))
 
     if len(countLabel) > 2:
         most_common_words = [word for word, word_count in Counter(countLabel).most_common()[:-2:-1]] # 找出數量最少的label
@@ -57,11 +51,7 @@ def romoveNoise(data):
         removeIdx = np.where(data[:, -1] == float_lst[0]) # 找出雜點index
         print('Idx: ',removeIdx)
         noiseData = originalData[removeIdx,:]
-        # print('!!!!!!!!', noiseData)
         result = np.delete(data, removeIdx, 0) # 刪除雜點
-        # print('/////////////////////////////')
-        # print('After Remove: ',result)
-        # print('/////////////////////////////')
 
         return result,noiseData
 
@@ -71,9 +61,6 @@ def romoveNoise(data):
 # 統一label，原始label大的標為1，小的標為0
 def changeLabel(data):
     changedata = copy.copy(data)
-    # countLabel = Counter(changedata[:,-1])
-    # print('QQQQQQ',countLabel)
-    # print(data[:,-1])
     bigLabel = np.max(data[:,-1])
     bigIdx = np.where(data[:, -1] == bigLabel)
     print('bigIdx : ',bigIdx)
@@ -105,21 +92,14 @@ def perceptron(train, test, learning_rate, iteration):
 
     x_train = train[:, :train.shape[1]-1]
     y_train = train[:, -1]
-    # print('X_Train: ', x_train)
-    # print('Y_Train: ', y_train)
 
     x_test = test[:, :test.shape[1] - 1]
     y_test = test[:, -1]
-    # print('X_Test: ', x_test)
-    # print('Y_Test: ', y_test)
 
     for n in range(iteration):
-        # print('\nRound: ',n)
         i = n % train.shape[0]
         v = np.dot(weight.T, x_train[i])
         predict = sgn(v)
-        # print('\npredict: ',predict)
-        # print('ans: ',y_train[i])
 
         if y_train[i]>predict:
             weight = weight + learning_rate * x_train[i]
@@ -128,29 +108,18 @@ def perceptron(train, test, learning_rate, iteration):
             weight = weight - learning_rate * x_train[i]
             train_error_rate = train_error_rate + 1
 
-        # print('Weight: ',weight)
     weight = np.round(weight,2)
 
     training_accuracy = np.round( 1-(train_error_rate / iteration), 3 )
-    # print("======= Training =======")
-    # print('\nError: ', train_error_rate)
-    # print('Correct Rate: ', training_accuracy)
-    # print("========================")
 
     for i in range(test.shape[0]):
         v = np.dot(weight.T, x_test[i])
         predict = sgn(v)
-        # print('\npredict: ',predict)
-        # print('ans: ',y_test[i])
 
         if y_test[i]!=predict:
             test_error_rate = test_error_rate + 1
 
     test_accuracy = np.round( 1 - (test_error_rate / test.shape[0]), 3 )
-    # print("\n======= Testing =======")
-    # print('Error: ', test_error_rate)
-    # print('Correct Rate: ', test_accuracy)
-    # print("========================")
     return training_accuracy,test_accuracy,weight
 
 # 畫圖
@@ -160,8 +129,6 @@ def plotData(dataSet, w, window, DataType, NoiseData):
     ax.set_title(DataType + 'dataset')
     plt.xlabel('X')
     plt.ylabel('Y')
-    # plt.axis('equal')
-    # ax.set_aspect('equal', adjustable='box')
 
     # 畫training/testing data
     labels = dataSet[:, -1]
@@ -170,7 +137,6 @@ def plotData(dataSet, w, window, DataType, NoiseData):
     idx_2 = np.where(dataSet[:, -1] == 0)
     p2 = ax.scatter(dataSet[idx_2, 1], dataSet[idx_2, 2], marker='x', color='r', label=0, s=20)
 
-    # print(len(NoiseData))
     # 畫雜點
     if len(NoiseData) > 0:
         p3 = ax.scatter(NoiseData[:, :, 1], NoiseData[:, :, 2], marker='^', color='b', label='Noise', s=20) # NoiseData is 3d-array
@@ -199,8 +165,3 @@ def plotData(dataSet, w, window, DataType, NoiseData):
     toolbar.update()
     toolbar.place(x=725, y=10)
 
-
-# if __name__ == '__main__':
-    # data = readfile()
-    # train, test = preprocess(data)
-    # perceptron(train, test)
