@@ -44,7 +44,7 @@
     步驟二和步驟三反覆執行，直到達到我們所設的收斂條件(疊代次數)才停止(每一次疊代訓練一筆資料)。
 
   - 繪圖  
-    使用matplotlib套件。圈圈為正樣本，叉叉為負樣本，藉由訓練完成的感知機可以得到最終的Weight，從Weight我們能夠得到分割正負樣本的直線方程式，並將之繪於圖上。
+    圈圈為正樣本，叉叉為負樣本，藉由訓練完成的感知機可以得到最終的Weight，從Weight我們能夠得到分割正負樣本的直線方程式，並將之繪於圖上。
     - 畫正負樣本  
      ![](https://github.com/XinMiaoWang/Single-Layer-Perceptron/blob/main/demo/10.png)  
     - 畫Noise  
