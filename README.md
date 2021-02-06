@@ -23,7 +23,7 @@
       
   - 感知機設計  
     步驟一：網路初始化  
-        > Weight的初始值為隨機產生，範圍在[0,1)之間。  
+          Weight的初始值為隨機產生，範圍在[0,1)之間。  
           
        ![](https://github.com/XinMiaoWang/Single-Layer-Perceptron/blob/main/demo/4.png)  
           
